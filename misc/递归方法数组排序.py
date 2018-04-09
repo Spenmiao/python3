@@ -1,6 +1,6 @@
 
 nums = [3, 2, 4, 5, 1, 9, 10, 6, 8, 7, 111]
-# # target
+
 def funsort(nums):
 	l = []
 	for i, j in enumerate(nums[1:]):
