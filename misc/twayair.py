@@ -15,6 +15,17 @@ from bs4 import BeautifulSoup
 # 		ls.append((x('input')[0]['value'], x('span')[0].string))
 # 		ls.append((x('input')[1]['value'], x('span')[1].string))
 # print(dict(ls))
+#测试session
+# import time , requests
+# from bs4 import BeautifulSoup
+# t = 1555426686.094306
+# print(time.ctime(t))
+
+# html = requests.get('https://www.twayair.com/main.do')
+# soup = BeautifulSoup(html.content, 'lxml')
+# sessionid = soup.select_one('input[name="clientSessionId"]')['value']
+# print(sessionid)
+
 airlineinfo = {
 	'dpturCntryCode': '出发国家',
 	'arrivCntryCode': ' 到达国家',
