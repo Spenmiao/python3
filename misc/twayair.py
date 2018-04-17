@@ -1,4 +1,4 @@
-import requests, json, re
+import requests, json, re, time
 from bs4 import BeautifulSoup
 
 #获得航线信息
@@ -41,18 +41,24 @@ airlineinfo = {
 headers = {
 	'Host': 'www.twayair.com',
 	'Connection': 'keep-alive',
-	'X-Requested': 'txt/htm',
+	'Accept': 'txt/htm',
+	'X-Requested-With': 'XMLHttpRequest',
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64)',
 	'Referer': 'https://www.twayair.com/booking/availabilityList.do',
 	'Accept-Encoding': 'gzip',
 	'Accept-Language': 'zh-CN',
-	'Cookie': 'JSESSIONID=s7~A65F8F10A4CD1D08B26DFC51C63DDABC.Homepage_138_Node02'
+	'Cookie': 'TWAYLANG=ZH;JSESSIONID=s6~4072681BA2CBC00EE1029D444F1937AE.Homepage_137_Node02;'
 	}
+url = 'https://www.twayair.com/booking/ajax/searchAvailability.do?origin=TAE&destination=CJU&origin1=&destination1=&origin2=&destination2=&onwardDateStr=20180527&returnDateStr=&pointOfPurchase=KR&paxTypeCountStr=1%2C0%2C0&today=20180417&travelType=OW&orderByOW=&orderByRT=&fareBasisCodeOW=&fareBasisCodeRT=&searchType=byDate&arrivCntryCode=&currencyCode=KRW&domesticYn=Y&promotionCode=&searchAvailId=fdf26f7bd5c992667baf7e9949732776dceab71714f07211b4055c222811d67d&segmentId=&fareTypeOW=&fareTypeRT=&onwardFareSum=&returnFareSum=&segmentIdOW=&segmentIdRT=&bundleIndexOW=&bundleIndexRT=&bundleAmountOW=0&bundleAmountRT=0&selectedAvailValueOW=&selectedAvailValueRT='
+pre_url = 'https://www.twayair.com/booking/ajax/setBookingParam.do?origin=TAE&destination=CJU&origin1=&destination1=&origin2=&destination2=&onwardDateStr=20180527&returnDateStr=&pointOfPurchase=KR&paxTypeCountStr=1%2C0%2C0&today=20180417&travelType=OW&orderByOW=&orderByRT=&fareBasisCodeOW=&fareBasisCodeRT=&searchType=byDate&arrivCntryCode=&currencyCode=KRW&domesticYn=Y&promotionCode=&searchAvailId=fdf26f7bd5c992667baf7e9949732776dceab71714f07211b4055c222811d67d&segmentId=&fareTypeOW=&fareTypeRT=&onwardFareSum=&returnFareSum=&segmentIdOW=&segmentIdRT=&bundleIndexOW=&bundleIndexRT=&bundleAmountOW=0&bundleAmountRT=0&selectedAvailValueOW=&selectedAvailValueRT=&_={0}'
 
+
+time_stampt = time.time() * 1000
+se = requests.session()
+se.get(pre_url.format(time_stampt), headers=headers, verify=False)
 # url = 'https://www.twayair.com/booking/ajax/searchAvailability.do?origin=TAE&destination=CJU&origin1=TAE&destination1=CJU&origin2=&destination2=&onwardDateStr=20180414&returnDateStr=&pointOfPurchase=KR&paxTypeCountStr=1%2C0%2C0&today=20180413&travelType=OW&orderByOW=&orderByRT=&fareBasisCodeOW=&fareBasisCodeRT=&searchType=byDate&arrivCntryCode=&currencyCode=KRW&domesticYn=Y&promotionCode=&searchAvailId=027f5a11e3283bdead25c9feef2f9e4ef87a2313a110008f463cd881cd13998b&segmentId=&fareTypeOW=&fareTypeRT=&onwardFareSum=&returnFareSum=&segmentIdOW=&segmentIdRT=&bundleIndexOW=&bundleIndexRT=&bundleAmountOW=0&bundleAmountRT=0&selectedAvailValueOW=&selectedAvailValueRT='
-url = 'https://www.twayair.com/booking/ajax/searchAvailability.do?origin=GMP&destination=CJU&origin1=&destination1=&origin2=&destination2=&onwardDateStr=20180418&returnDateStr=20180418&pointOfPurchase=KR&paxTypeCountStr=3%2C2%2C1&today=20180415&travelType=OW&orderByOW=&orderByRT=&fareBasisCodeOW=&fareBasisCodeRT=&searchType=byDate&arrivCntryCode=&currencyCode=KRW&domesticYn=Y&promotionCode=&searchAvailId=e2d8e7693f9b0a2d5eb2e7fe21ea0dde1852f7571dd92735cca58122fdd6a0f2&segmentId=&fareTypeOW=&fareTypeRT=&onwardFareSum=&returnFareSum=&segmentIdOW=&segmentIdRT=&bundleIndexOW=&bundleIndexRT=&bundleAmountOW=0&bundleAmountRT=0&selectedAvailValueOW=&selectedAvailValueRT='
 
-html = requests.get(url, headers=headers, verify=False)
+html = se.get(url, headers=headers, verify=False)
 # print(html.url)
 soup = BeautifulSoup(html.content, 'lxml')
 x = soup.select('.px')
